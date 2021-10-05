@@ -15,10 +15,6 @@
 
 ### Problem I am having.
 
-**Problem :** Url https://qa-interview-test.splytech.dev/api/drivers is down.
-
-**Solution suggested :**
-
 **Problem :**
 
 ### If I have more time, what will I do?
