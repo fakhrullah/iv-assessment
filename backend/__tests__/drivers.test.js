@@ -29,6 +29,17 @@ test('Should return error missing latitude parameter', async () => {
   }
 })
 
-test.todo('Should return error missing longitude parameter',)
+test('Should return error missing longitude parameter', async () => {
+  expect.assertions(2);
+  try {
+    const resp = await axios.get(`${BASE_URL}/drivers?latitude=1.285194`);
+    
+  } catch (e) {
+   const errResp = e.response;
+   
+   expect(errResp.status).toBe(400);
+   expect(errResp.data.message).toMatch(/Longitude is required/)
+  }
+})
 
 test.todo('Should return error missing both latitude & longitude parameter',)
