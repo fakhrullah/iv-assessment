@@ -11,7 +11,7 @@ const {PORT} = process.env;
 fastify.get('/drivers', async (request, reply) => {
   const externalAPI = 'https://qa-interview-test.splytech.dev/api/drivers';
 
-  const {latitude, longitude, count} = request.params;
+  const { latitude, longitude, count } = request.query;
 
   const resp = await axios.get(`${externalAPI}`, {
     params: {
