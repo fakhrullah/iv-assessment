@@ -18,7 +18,15 @@ fastify.get('/drivers', async (request, reply) => {
   // Latitude & Longitude is required
   if (latitude === undefined) {
     errorMessage = 'Missing latitude. Latitude is required.';
+
+    if (longitude === undefined) {
+      errorMessage = 'Missing latitude & longitude. Both latitude & longitude is required.'
+    }
   }
+  if (longitude === undefined) {
+    errorMessage = 'Missing longitude. Longitude is required.'
+  }
+
 
   const resp = await axios.get(`${externalAPI}`, {
     params: {
