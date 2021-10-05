@@ -16,6 +16,18 @@ test('Should return success with 4 drivers only', async () => {
   expect(resp.data.drivers.length).toEqual(4);
 })
 
-test.todo('Should return error missing latitude parameter',)
+test('Should return error missing latitude parameter', async () => {
+  try {
+    const resp = await axios.get(`${BASE_URL}/drivers?longitude=103.8522982&count=4`);
+
+  } catch (e) {
+    const errResp = e.response;
+    
+    expect(errResp.status).toEqual(400);
+    expect(errResp.data.message).toMatch(/latitude is required/i);
+  }
+})
 
 test.todo('Should return error missing longitude parameter',)
+
+test.todo('Should return error missing both latitude & longitude parameter',)

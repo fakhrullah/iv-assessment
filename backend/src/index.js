@@ -11,7 +11,14 @@ const {PORT} = process.env;
 fastify.get('/drivers', async (request, reply) => {
   const externalAPI = 'https://qa-interview-test.splytech.dev/api/drivers';
 
+  let errorMessage;
   const { latitude, longitude, count } = request.query;
+
+  // Validation:
+  // Latitude & Longitude is required
+  if (latitude === undefined) {
+    errorMessage = 'Missing latitude. Latitude is required.';
+  }
 
   const resp = await axios.get(`${externalAPI}`, {
     params: {
@@ -21,7 +28,14 @@ fastify.get('/drivers', async (request, reply) => {
     }
   })
 
-  reply.send(resp.data)
+  if (errorMessage) {
+    // When have error
+    reply
+      .code(400)
+      .send(new Error(errorMessage));
+  } else {
+    reply.send(resp.data);
+  }
 })
 
 // Run the server!
