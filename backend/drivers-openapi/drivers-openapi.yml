@@ -1,0 +1,188 @@
+openapi: 3.0.2
+info:
+  title: drivers-openapi
+  version: 0.1.0
+paths:
+  /drivers:
+    get:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                description: ''
+                type: object
+                properties:
+                  pickup_eta:
+                    type: number
+                  drivers:
+                    type: array
+                    uniqueItems: true
+                    minItems: 1
+                    items:
+                      required:
+                        - driver_id
+                      properties:
+                        driver_id:
+                          type: string
+                          minLength: 1
+                        location:
+                          type: object
+                          properties:
+                            latitude:
+                              type: number
+                            longitude:
+                              type: number
+                            bearing:
+                              type: number
+                          required:
+                            - latitude
+                            - longitude
+                            - bearing
+                required:
+                  - pickup_eta
+                  - drivers
+                x-examples:
+                  example-1:
+                    pickup_eta: 4
+                    drivers:
+                      - driver_id: 0-cm2uo0p9zyo
+                        location:
+                          latitude: 1.2919375680803329
+                          longitude: 103.85726376952442
+                          bearing: 143
+                      - driver_id: 1-k82nthh8lw
+                        location:
+                          latitude: 1.2821244218229404
+                          longitude: 103.8363947564219
+                          bearing: 330
+                      - driver_id: 2-mkj69mtpneo
+                        location:
+                          latitude: 1.2835411362016378
+                          longitude: 103.82999805302633
+                          bearing: 348
+                      - driver_id: 3-7469x3nw5rm
+                        location:
+                          latitude: 1.277957450198589
+                          longitude: 103.83770055792199
+                          bearing: 315
+                      - driver_id: 4-p2agaq32tr
+                        location:
+                          latitude: 1.2810681826089998
+                          longitude: 103.86207946539945
+                          bearing: 276
+                      - driver_id: 5-07j80zicrm5c
+                        location:
+                          latitude: 1.279963530517891
+                          longitude: 103.84442077764052
+                          bearing: 187
+                      - driver_id: 6-6968cid0k5p
+                        location:
+                          latitude: 1.2905215251548507
+                          longitude: 103.87716379527629
+                          bearing: 85
+                      - driver_id: 7-jxgl2e8k4oh
+                        location:
+                          latitude: 1.290704751222724
+                          longitude: 103.86847684623858
+                          bearing: 301
+                      - driver_id: 8-iccgqnj20gj
+                        location:
+                          latitude: 1.279843125927803
+                          longitude: 103.86409217575189
+                          bearing: 304
+                      - driver_id: 9-c8dxlfdknuv
+                        location:
+                          latitude: 1.2911630653459352
+                          longitude: 103.85674134299963
+                          bearing: 300
+              example:
+                pickup_eta: 4
+                drivers:
+                  - driver_id: 0-cm2uo0p9zyo
+                    location:
+                      latitude: 1.2919375680803329
+                      longitude: 103.85726376952442
+                      bearing: 143
+                  - driver_id: 1-k82nthh8lw
+                    location:
+                      latitude: 1.2821244218229404
+                      longitude: 103.8363947564219
+                      bearing: 330
+                  - driver_id: 2-mkj69mtpneo
+                    location:
+                      latitude: 1.2835411362016378
+                      longitude: 103.82999805302633
+                      bearing: 348
+                  - driver_id: 3-7469x3nw5rm
+                    location:
+                      latitude: 1.277957450198589
+                      longitude: 103.83770055792199
+                      bearing: 315
+                  - driver_id: 4-p2agaq32tr
+                    location:
+                      latitude: 1.2810681826089998
+                      longitude: 103.86207946539945
+                      bearing: 276
+                  - driver_id: 5-07j80zicrm5c
+                    location:
+                      latitude: 1.279963530517891
+                      longitude: 103.84442077764052
+                      bearing: 187
+                  - driver_id: 6-6968cid0k5p
+                    location:
+                      latitude: 1.2905215251548507
+                      longitude: 103.87716379527629
+                      bearing: 85
+                  - driver_id: 7-jxgl2e8k4oh
+                    location:
+                      latitude: 1.290704751222724
+                      longitude: 103.86847684623858
+                      bearing: 301
+                  - driver_id: 8-iccgqnj20gj
+                    location:
+                      latitude: 1.279843125927803
+                      longitude: 103.86409217575189
+                      bearing: 304
+                  - driver_id: 9-c8dxlfdknuv
+                    location:
+                      latitude: 1.2911630653459352
+                      longitude: 103.85674134299963
+                      bearing: 300
+        '400':
+          description: Bad request. Such as missing parameters
+          headers: {}
+          content:
+            application/json:
+              schema:
+                description: 'Error bad request'
+                type: object
+                properties:
+                  code: 
+                    type: number
+                  message: 
+                    type: string
+              example:
+                code: 400
+                message: 'Missing latitude'
+      operationId: ''
+      parameters:
+        - schema:
+            type: number
+          in: query
+          name: latitude
+          description: Latitude of the drivers  location
+          required: true
+        - schema:
+            type: number
+          in: query
+          name: longitude
+          description: Longitude of the drivers location
+          required: true
+        - schema:
+            type: number
+          in: query
+          name: count
+          description: Numbers of cars to retrieve
