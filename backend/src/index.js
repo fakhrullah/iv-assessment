@@ -1,3 +1,5 @@
+const { default: axios } = require('axios');
+
 require('dotenv').config();
 const fastify = require('fastify')({
   logger: true
@@ -6,8 +8,20 @@ const fastify = require('fastify')({
 const {PORT} = process.env;
 
 // Declare a route
-fastify.get('/drivers', function (request, reply) {
-  reply.send({ hello: 'world' })
+fastify.get('/drivers', async (request, reply) => {
+  const externalAPI = 'https://qa-interview-test.splytech.dev/api/drivers';
+
+  const {latitude, longitude, count} = request.params;
+
+  const resp = await axios.get(`${externalAPI}`, {
+    params: {
+      latitude,
+      longitude,
+      count
+    }
+  })
+
+  reply.send(resp.data)
 })
 
 // Run the server!
