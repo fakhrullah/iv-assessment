@@ -17,6 +17,7 @@ test('Should return success with 4 drivers only', async () => {
 })
 
 test('Should return error missing latitude parameter', async () => {
+  expect.assertions(2);
   try {
     const resp = await axios.get(`${BASE_URL}/drivers?longitude=103.8522982&count=4`);
 
