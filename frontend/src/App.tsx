@@ -101,7 +101,7 @@ function App() {
 
       </Container>
 
-      <div style={{width: '100%', height: '320px'}}>
+      <Box width="100%" height="360px">
         <GoogleMapReact
            bootstrapURLKeys={{ key: REACT_APP_GOOGLE_MAP_API_KEY}}
            defaultCenter={offices[0].location}
@@ -117,17 +117,17 @@ function App() {
                 markerStyle={MarkerStyle.office}
               />
 
-      {driverQuery.data?.map((driver) => (
-        <Marker
-          key={driver.id}
-          text={driver.id}
-          lat={driver.location.lat}
-          lng={driver.location.lng}
-          markerStyle={MarkerStyle.car}
-          />
-      ))}
+          {driverQuery.data?.map((driver) => (
+            <Marker
+              key={driver.id}
+              text={driver.id}
+              lat={driver.location.lat}
+              lng={driver.location.lng}
+              markerStyle={MarkerStyle.car}
+              />
+          ))}
         </GoogleMapReact>
-      </div>
+      </Box>
 
       <div>
         Refresh rate interval: 

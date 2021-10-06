@@ -1,7 +1,10 @@
 import React, { CSSProperties } from 'react';
 import PropTypes from 'prop-types';
 import {ChildComponentProps} from 'google-map-react'
+import {Center, Box, Image} from '@chakra-ui/react'
 
+import carImage from '../car.png';
+import officeImage from '../office.png';
 
 export enum MarkerStyle {
   'office',
@@ -12,37 +15,20 @@ type MarkerProps = {
   markerStyle: MarkerStyle
 } & ChildComponentProps;
 
-const officeStyle: CSSProperties = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  width: '18px',
-  height: '18px',
-  backgroundColor: 'red',
-  border: '2px solid #fff',
-  borderRadius: '100%',
-  userSelect: 'none',
-  transform: 'translate(-50%, -50%)',
-}
-
-const carStyle: CSSProperties = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  width: '18px',
-  height: '18px',
-  backgroundColor: 'green',
-  border: '2px solid #fff',
-  borderRadius: '100%',
-  userSelect: 'none',
-  transform: 'translate(-50%, -50%)',
-}
-
-const Marker = (props: MarkerProps) => (
-  <div
-    style={props.markerStyle === MarkerStyle.office ? officeStyle : carStyle}
-  />
-);
+const Marker = (props: MarkerProps) => {
+    return (<Center 
+      width={props.markerStyle === MarkerStyle.car ? 8 : 10}
+      height={props.markerStyle === MarkerStyle.car ? 8 : 10}
+      top="50%"
+      left="50%"
+      transform="translate(-50%, -50%)"
+      backgroundColor={props.markerStyle === MarkerStyle.car ? 'white' : 'white'}
+      border="solid 2px red"
+      borderRadius="50%"
+     ><Image width="100%" 
+      src={props.markerStyle === MarkerStyle.car ? carImage : officeImage}/>
+    </Center>);
+};
 
 Marker.defaultProps = {
   onClick: null,
