@@ -8,23 +8,28 @@ import { useQuery } from 'react-query';
 import { getDrivers } from './services/driver_service_fake';
 
 function App() {
+  
+  const [officeData, setOfficeData] = useState<OfficeModel>(offices[0]);
+  const zoom = 11;
 
   const getCurrentOffice = (slug: string): OfficeModel => offices
     .find((ofc) => ofc.slug === slug) || offices[0];
 
-  const driverQuery = useQuery('drivers', getDrivers, {
+  const driverQuery = useQuery(['drivers', officeData], () => getDrivers(officeData.location), {
     initialData: [],
   });
 
-  const [officeData, setOfficeData] = useState<OfficeModel>(offices[0]);
-  const zoom = 11;
+  const onLocationChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setOfficeData({...officeData, ...getCurrentOffice(e.target.value)});
+    // driverQuery.refetch({});
+  }
 
   return (
     <div className="App">
       <div>
         Choose location:
         <select
-          onChange={(e) => setOfficeData({...officeData, ...getCurrentOffice(e.target.value)})}
+          onChange={onLocationChange}
           >
           {
             offices
