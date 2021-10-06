@@ -5,6 +5,11 @@ import Marker, { MarkerStyle } from './components/Marker';
 import { OfficeModel } from './models/OfficeModel';
 import { offices } from './data/offices'
 import { useQuery } from 'react-query';
+import { Box, Container, Center,
+  Text,
+  Spinner,
+  Slider, SliderTrack, SliderFilledTrack, SliderThumb 
+} from '@chakra-ui/react';
 import { getDrivers } from './services/driver_service_impl';
 // import { getDrivers } from './services/driver_service_fake';
 
@@ -37,8 +42,8 @@ function App() {
 
   // TODO: Optimization - Only call when user confirm set number, so that less burden for backend API
   // TODO: Optimization - Filter number in local data because we already have the data
-  const onCarCountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCarCount(parseInt(e.target.value));
+  const onCarSliderChange = (value: number) => {
+    setCarCount(value);
   }
 
   const onRefreshRateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -47,30 +52,54 @@ function App() {
 
   return (
     <div className="App">
-      {driverQuery.isRefetching && 
-        <div style={{position: 'absolute', width: '40px', height: '40px', backgroundColor:'blue'}}> </div>
-        }
-      <div>
-        Choose location:
-        <select
-          onChange={onLocationChange}
-          >
-          {
-            offices
-              .map((office) => (
-                <option 
-                key={office.slug} 
-                value={office.slug}
-                >{office.name}</option>
-              ))
-          }
-        </select>
-      </div>
 
-      <div>Slider car number:
-        {' '}
-        <input type="number" value={carCount} onChange={onCarCountChange}/>
-      </div>
+      <Container>
+
+        {
+          driverQuery.isRefetching && 
+          <Spinner color="blue.800" position="absolute" top={8} />
+        }
+
+        <div>
+          Choose location:
+          <select
+            onChange={onLocationChange}
+            >
+            {
+              offices
+                .map((office) => (
+                  <option 
+                  key={office.slug} 
+                  value={office.slug}
+                  >{office.name}</option>
+                ))
+            }
+          </select>
+        </div>
+
+        <Box height={4} />
+      
+        <Center>
+          <Box width='100%'>
+            <Text>Car count: ({carCount})</Text>
+            <Slider
+              aria-label="slider-ex-1"
+              value={carCount}
+              step={1}
+              max={50}
+              onChange={onCarSliderChange}
+            >
+              <SliderTrack>
+                <SliderFilledTrack />
+              </SliderTrack>
+              <SliderThumb />
+            </Slider>
+          </Box>
+        </Center>
+
+        <Box height={4} />
+
+      </Container>
 
       <div style={{width: '100%', height: '320px'}}>
         <GoogleMapReact

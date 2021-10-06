@@ -5,13 +5,16 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { ReactQueryDevtools } from 'react-query/devtools'
+import {ChakraProvider} from '@chakra-ui/react';
 
 const queryClient = new QueryClient();
 
 ReactDOM.render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient} >
-      <App />
+      <ChakraProvider>
+        <App />
+      </ChakraProvider>
       <ReactQueryDevtools />
     </QueryClientProvider>
   </React.StrictMode>,
