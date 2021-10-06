@@ -7,7 +7,7 @@ import { offices } from './data/offices'
 import { useQuery } from 'react-query';
 import { Box, Container, Center,
   Text,
-  Spinner,
+  Spinner, Select,
   Slider, SliderTrack, SliderFilledTrack, SliderThumb 
 } from '@chakra-ui/react';
 import { getDrivers } from './services/driver_service_impl';
@@ -46,25 +46,23 @@ function App() {
     setCarCount(value);
   }
 
-  const onRefreshRateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setRefreshRateSeconds(parseInt(e.target.value));
+  const onRefreshRateChange = (value: number) => {
+    setRefreshRateSeconds(value);
   }
 
   return (
     <div className="App">
 
-      <Container>
+      <Container pt={16}>
 
         {
           driverQuery.isRefetching && 
           <Spinner color="blue.800" position="absolute" top={8} />
         }
 
-        <div>
-          Choose location:
-          <select
-            onChange={onLocationChange}
-            >
+        <Box display="flex">
+          <Text w="160px">Choose Office :</Text>
+          <Select onChange={onLocationChange}>
             {
               offices
                 .map((office) => (
@@ -74,8 +72,8 @@ function App() {
                   >{office.name}</option>
                 ))
             }
-          </select>
-        </div>
+          </Select>
+        </Box>
 
         <Box height={4} />
       
@@ -86,6 +84,7 @@ function App() {
               aria-label="slider-ex-1"
               value={carCount}
               step={1}
+              min={1}
               max={50}
               onChange={onCarSliderChange}
             >
@@ -129,11 +128,25 @@ function App() {
         </GoogleMapReact>
       </Box>
 
-      <div>
-        Refresh rate interval: 
-        {' '}
-        <input type="number" value={refreshRateSeconds} onChange={onRefreshRateChange} />
-      </div>
+      <Center>
+          <Box width='400px' display="flex">
+            <Text>Refresh Rate: ({refreshRateSeconds}s)</Text>
+            <Box width={8} />
+            <Slider
+              aria-label="slider-ex-1"
+              value={refreshRateSeconds}
+              step={1}
+              min={1}
+              max={20}
+              onChange={onRefreshRateChange}
+            >
+              <SliderTrack>
+                <SliderFilledTrack />
+              </SliderTrack>
+              <SliderThumb />
+            </Slider>
+          </Box>
+        </Center>
 
     </div>
   );
