@@ -60,7 +60,7 @@ function App() {
       <div style={{width: '100%', height: '320px'}}>
         <GoogleMapReact
            bootstrapURLKeys={{ key: REACT_APP_GOOGLE_MAP_API_KEY}}
-           defaultCenter={officeData.location}
+           defaultCenter={offices[0].location}
            defaultZoom={zoom}
            yesIWantToUseGoogleMapApiInternals
            center={officeData.location}
