@@ -5,6 +5,28 @@ const fastify = require('fastify')({
   logger: true
 })
 
+const corsConfig = () => {
+  return ({
+    origin: (origin, cb) => {
+      // Allow is env development
+      if (process.env.NODE_ENV === 'development') {
+        cb(null, true);
+        return ;
+      }
+
+      // Allow localhost
+      if(/localhost/.test(origin)){
+        cb(null, true);
+        return;
+      }
+
+      cb(new Error('Not allowed'));
+    }
+  });
+}
+
+fastify.register(require('fastify-cors'), corsConfig)
+
 const {PORT} = process.env;
 
 // Declare a route
