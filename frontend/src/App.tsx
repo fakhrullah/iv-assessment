@@ -2,54 +2,23 @@ import React, { useState } from 'react';
 import './App.css';
 import GoogleMapReact from 'google-map-react';
 import Marker from './components/Marker';
-
-interface LocationModel {
-  lat: number
-  lng: number
-}
-
-interface OfficeModel {
-  name: string
-  slug: string
-  location: LocationModel
-}
+import { OfficeModel } from './models/OfficeModel';
+import { offices } from './data/offices'
 
 function App() {
-
-  const offices: OfficeModel[] = [
-    {
-      name: 'Singapore',
-      slug: 'singapore',
-      location: {
-        lat: 1.285194,
-        lng: 103.8522982
-      }
-    },
-    {
-      name: 'London',
-      slug: 'london',
-      location: {
-        lat: 51.5049375,
-        lng: -0.0964509
-      }
-    },
-  ];
-
-  const getOfficeLocation = (slug: string): LocationModel => offices
-    .find((office) => office.slug === slug)?.location || {lat: 0, lng: 0};
 
   const getCurrentOffice = (slug: string): OfficeModel => offices
     .find((ofc) => ofc.slug === slug) || offices[0];
 
-  const [office, setOffice] = useState<string>('singapore');
-  const zoom = 8;
+  const [officeData, setOfficeData] = useState<OfficeModel>(offices[0]);
+  const zoom = 11;
 
   return (
     <div className="App">
       <div>
         Choose location:
         <select
-          onChange={(e) => setOffice(e.target.value)}
+          onChange={(e) => setOfficeData({...officeData, ...getCurrentOffice(e.target.value)})}
           >
           {
             offices
@@ -68,16 +37,16 @@ function App() {
       <div style={{width: '100%', height: '320px'}}>
         <GoogleMapReact
            bootstrapURLKeys={{ key: 'AIzaSyCzOjhJjfh6FGaYAxpvCekVI8Zvn2JWyZE'}}
-           defaultCenter={getOfficeLocation('singapore')}
+           defaultCenter={officeData.location}
            defaultZoom={zoom}
            yesIWantToUseGoogleMapApiInternals
-           center={getOfficeLocation(office)}
+           center={officeData.location}
           >
             <Marker
-                key={getCurrentOffice(office).slug}
-                text={getCurrentOffice(office).name}
-                lat={getCurrentOffice(office).location.lat}
-                lng={getCurrentOffice(office).location.lng}
+                key={officeData.slug}
+                text={officeData.name}
+                lat={officeData.location.lat}
+                lng={officeData.location.lng}
               />
         </GoogleMapReact>
       </div>
