@@ -10,18 +10,25 @@ import { getDrivers } from './services/driver_service_fake';
 function App() {
   
   const [officeData, setOfficeData] = useState<OfficeModel>(offices[0]);
+  const [carCount, setCarCount] = useState<number>(50);
   const zoom = 11;
 
   const getCurrentOffice = (slug: string): OfficeModel => offices
     .find((ofc) => ofc.slug === slug) || offices[0];
 
-  const driverQuery = useQuery(['drivers', officeData], () => getDrivers(officeData.location), {
+  const driverQuery = useQuery(['drivers', officeData, carCount], () => getDrivers(officeData.location, carCount), {
     initialData: [],
   });
 
   const onLocationChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setOfficeData({...officeData, ...getCurrentOffice(e.target.value)});
     // driverQuery.refetch({});
+  }
+
+  // TODO: Optimization - Only call when user confirm set number, so that less burden for backend API
+  // TODO: Optimization - Filter number in local data because we already have the data
+  const onCarCountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCarCount(parseInt(e.target.value));
   }
 
   return (
@@ -43,7 +50,10 @@ function App() {
         </select>
       </div>
 
-      <div>Slider car number</div>
+      <div>Slider car number:
+        {' '}
+        <input type="number" defaultValue={carCount} value={carCount} onChange={onCarCountChange}/>
+      </div>
 
       <div style={{width: '100%', height: '320px'}}>
         <GoogleMapReact
