@@ -7,6 +7,8 @@ import { offices } from './data/offices'
 import { useQuery } from 'react-query';
 import { getDrivers } from './services/driver_service_fake';
 
+const { REACT_APP_GOOGLE_MAP_API_KEY = '' } = process.env;
+
 function App() {
   
   const [officeData, setOfficeData] = useState<OfficeModel>(offices[0]);
@@ -57,7 +59,7 @@ function App() {
 
       <div style={{width: '100%', height: '320px'}}>
         <GoogleMapReact
-           bootstrapURLKeys={{ key: 'AIzaSyCzOjhJjfh6FGaYAxpvCekVI8Zvn2JWyZE'}}
+           bootstrapURLKeys={{ key: REACT_APP_GOOGLE_MAP_API_KEY}}
            defaultCenter={officeData.location}
            defaultZoom={zoom}
            yesIWantToUseGoogleMapApiInternals
