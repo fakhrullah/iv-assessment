@@ -12,7 +12,7 @@ export async function getDrivers(officeLocation: CoordinateModel, count?: number
     queryString.append('count', count?.toString());
   }
 
-  const getDriversUrl = 'http://localhost:3020/drivers?' + queryString;
+  const getDriversUrl = `${process.env.REACT_APP_BACKEND_API_URL}/drivers?` + queryString;
 
   const myRequest = new Request(getDriversUrl, {
     method: 'GET',
