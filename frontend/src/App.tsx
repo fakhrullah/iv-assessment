@@ -1,14 +1,20 @@
 import React, { useState } from 'react';
 import './App.css';
 import GoogleMapReact from 'google-map-react';
-import Marker from './components/Marker';
+import Marker, { MarkerStyle } from './components/Marker';
 import { OfficeModel } from './models/OfficeModel';
 import { offices } from './data/offices'
+import { useQuery } from 'react-query';
+import { getDrivers } from './services/driver_service_fake';
 
 function App() {
 
   const getCurrentOffice = (slug: string): OfficeModel => offices
     .find((ofc) => ofc.slug === slug) || offices[0];
+
+  const driverQuery = useQuery('drivers', getDrivers, {
+    initialData: [],
+  });
 
   const [officeData, setOfficeData] = useState<OfficeModel>(offices[0]);
   const zoom = 11;
@@ -47,7 +53,18 @@ function App() {
                 text={officeData.name}
                 lat={officeData.location.lat}
                 lng={officeData.location.lng}
+                markerStyle={MarkerStyle.office}
               />
+
+      {driverQuery.data?.map((driver) => (
+        <Marker
+          key={driver.id}
+          text={driver.id}
+          lat={driver.location.lat}
+          lng={driver.location.lng}
+          markerStyle={MarkerStyle.car}
+          />
+      ))}
         </GoogleMapReact>
       </div>
 
