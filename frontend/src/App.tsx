@@ -5,15 +5,16 @@ import Marker, { MarkerStyle } from './components/Marker';
 import { OfficeModel } from './models/OfficeModel';
 import { offices } from './data/offices'
 import { useQuery } from 'react-query';
-import { getDrivers } from './services/driver_service_fake';
+import { getDrivers } from './services/driver_service_impl';
+// import { getDrivers } from './services/driver_service_fake';
 
 const { REACT_APP_GOOGLE_MAP_API_KEY = '' } = process.env;
 
 function App() {
   
   const [officeData, setOfficeData] = useState<OfficeModel>(offices[0]);
-  const [carCount, setCarCount] = useState<number>(50);
-  const [refreshRateSeconds, setRefreshRateSeconds] = useState<number>(5)
+  const [carCount, setCarCount] = useState<number>(5);
+  const [refreshRateSeconds, setRefreshRateSeconds] = useState<number>(10)
 
   const zoom = 11;
 
