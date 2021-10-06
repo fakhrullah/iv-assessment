@@ -13,14 +13,21 @@ function App() {
   
   const [officeData, setOfficeData] = useState<OfficeModel>(offices[0]);
   const [carCount, setCarCount] = useState<number>(50);
+  const [refreshRateSeconds, setRefreshRateSeconds] = useState<number>(5)
+
   const zoom = 11;
 
   const getCurrentOffice = (slug: string): OfficeModel => offices
     .find((ofc) => ofc.slug === slug) || offices[0];
 
-  const driverQuery = useQuery(['drivers', officeData, carCount], () => getDrivers(officeData.location, carCount), {
-    initialData: [],
-  });
+  const driverQuery = useQuery(
+    ['drivers', officeData, carCount],
+    () => getDrivers(officeData.location, carCount),
+    {
+      initialData: [],
+      refetchInterval: refreshRateSeconds * 1000, // convert to milliseconds
+    }
+  );
 
   const onLocationChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setOfficeData({...officeData, ...getCurrentOffice(e.target.value)});
@@ -33,8 +40,15 @@ function App() {
     setCarCount(parseInt(e.target.value));
   }
 
+  const onRefreshRateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setRefreshRateSeconds(parseInt(e.target.value));
+  }
+
   return (
     <div className="App">
+      {driverQuery.isRefetching && 
+        <div style={{position: 'absolute', width: '40px', height: '40px', backgroundColor:'blue'}}> </div>
+        }
       <div>
         Choose location:
         <select
@@ -54,7 +68,7 @@ function App() {
 
       <div>Slider car number:
         {' '}
-        <input type="number" defaultValue={carCount} value={carCount} onChange={onCarCountChange}/>
+        <input type="number" value={carCount} onChange={onCarCountChange}/>
       </div>
 
       <div style={{width: '100%', height: '320px'}}>
@@ -88,7 +102,7 @@ function App() {
       <div>
         Refresh rate interval: 
         {' '}
-        <input type="number"/>
+        <input type="number" value={refreshRateSeconds} onChange={onRefreshRateChange} />
       </div>
 
     </div>
