@@ -1,6 +1,8 @@
 import { CoordinateModel } from "../models/CoordinateModel";
 import { DriverModel } from "../models/DriverModel"
 
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
 export async function getDrivers(officeLocation: CoordinateModel, count?: number): Promise<DriverModel[]> {
   const driverNearSingaporeOffice = [
     {
@@ -192,6 +194,10 @@ export async function getDrivers(officeLocation: CoordinateModel, count?: number
       bearing: driver.location.bearing
     }))
   }
+
+  // Delay
+  await sleep(2000);
+
   return mapDataToDriverModel(fetchedDriversData);
 }
 
