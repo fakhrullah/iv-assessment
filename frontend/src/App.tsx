@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './App.css';
 import GoogleMapReact from 'google-map-react';
+import Marker from './components/Marker';
 
 interface LocationModel {
   lat: number
@@ -37,6 +38,9 @@ function App() {
   const getOfficeLocation = (slug: string): LocationModel => offices
     .find((office) => office.slug === slug)?.location || {lat: 0, lng: 0};
 
+  const getCurrentOffice = (slug: string): OfficeModel => offices
+    .find((ofc) => ofc.slug === slug) || offices[0];
+
   const [office, setOffice] = useState<string>('singapore');
   const zoom = 8;
 
@@ -63,11 +67,18 @@ function App() {
 
       <div style={{width: '100%', height: '320px'}}>
         <GoogleMapReact
-           bootstrapURLKeys={{ key: ''}}
+           bootstrapURLKeys={{ key: 'AIzaSyCzOjhJjfh6FGaYAxpvCekVI8Zvn2JWyZE'}}
            defaultCenter={getOfficeLocation('singapore')}
            defaultZoom={zoom}
+           yesIWantToUseGoogleMapApiInternals
            center={getOfficeLocation(office)}
           >
+            <Marker
+                key={getCurrentOffice(office).slug}
+                text={getCurrentOffice(office).name}
+                lat={getCurrentOffice(office).location.lat}
+                lng={getCurrentOffice(office).location.lng}
+              />
         </GoogleMapReact>
       </div>
 
