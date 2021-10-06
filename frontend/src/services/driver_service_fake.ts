@@ -1,6 +1,7 @@
+import { CoordinateModel } from "../models/CoordinateModel";
 import { DriverModel } from "../models/DriverModel"
 
-export async function getDrivers(): Promise<DriverModel[]> {
+export async function getDrivers(officeLocation: CoordinateModel, count?: number): Promise<DriverModel[]> {
   const driverNearSingaporeOffice = [
     {
       "driver_id": "0-sfs2qhlu2w",
@@ -84,6 +85,103 @@ export async function getDrivers(): Promise<DriverModel[]> {
     }
   ];
 
+  const driversNearLondonOffice = [
+    {
+      "driver_id": "0-vozntsc4by",
+      "location": {
+        "latitude": 51.512192325712064,
+        "longitude": -0.08240413854333889,
+        "bearing": 103
+      }
+    },
+    {
+      "driver_id": "1-9k29jys80ju",
+      "location": {
+        "latitude": 51.510895247522164,
+        "longitude": -0.08100901140110656,
+        "bearing": 230
+      }
+    },
+    {
+      "driver_id": "2-ozymqkzt0sq",
+      "location": {
+        "latitude": 51.4986624978152,
+        "longitude": -0.08285136338669187,
+        "bearing": 28
+      }
+    },
+    {
+      "driver_id": "3-w3o0ia1dkx9",
+      "location": {
+        "latitude": 51.49913107433367,
+        "longitude": -0.10716388275151553,
+        "bearing": 12
+      }
+    },
+    {
+      "driver_id": "4-22uxre9bmcv",
+      "location": {
+        "latitude": 51.503399154258254,
+        "longitude": -0.10174807579488047,
+        "bearing": 168
+      }
+    },
+    {
+      "driver_id": "5-p7wldpfpdcm",
+      "location": {
+        "latitude": 51.497419886284646,
+        "longitude": -0.09027769176943733,
+        "bearing": 145
+      }
+    },
+    {
+      "driver_id": "6-hejmlu1fu9",
+      "location": {
+        "latitude": 51.50159387012347,
+        "longitude": -0.11258613360809294,
+        "bearing": 260
+      }
+    },
+    {
+      "driver_id": "7-qd8l8t5ibkd",
+      "location": {
+        "latitude": 51.508563110609984,
+        "longitude": -0.08172786711918799,
+        "bearing": 111
+      }
+    },
+    {
+      "driver_id": "8-2x2mu6myrkj",
+      "location": {
+        "latitude": 51.50064821124252,
+        "longitude": -0.07817501922966526,
+        "bearing": 348
+      }
+    },
+    {
+      "driver_id": "9-iz55actbbz",
+      "location": {
+        "latitude": 51.506294325995796,
+        "longitude": -0.07327656698402732,
+        "bearing": 117
+      }
+    }
+  ];
+
+  let fetchedDriversData = [];
+  // Singapore latitude is 1.28
+  // Londong latitude is 51.5
+  if (officeLocation.lat < 2) {
+    fetchedDriversData = driverNearSingaporeOffice;
+  } else {
+    fetchedDriversData = driversNearLondonOffice;
+  }
+  
+  if (count) {
+    fetchedDriversData = fetchedDriversData.slice(0, count);
+  }
+
+
   const mapDataToDriverModel = (driversData: any[]): DriverModel[] => {
     return driversData.map((driver) => ({
       id: driver['driver_id'],
@@ -94,7 +192,7 @@ export async function getDrivers(): Promise<DriverModel[]> {
       bearing: driver.location.bearing
     }))
   }
-  return mapDataToDriverModel(driverNearSingaporeOffice);
+  return mapDataToDriverModel(fetchedDriversData);
 }
 
 export async function getDriverById(): Promise<DriverModel> {
